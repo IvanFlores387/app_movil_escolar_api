@@ -109,6 +109,14 @@ class AdminView(generics.CreateAPIView):
     # Eliminar administrador con delete (Borrar realmente)
     # TODO: Agregar eliminación de administradores
 
+    def delete(self, request, *args, **kwargs): 
+        admin = get_object_or_404(Administradores, id=request.GET.get("id"))
+        try: 
+            admin.user.delete()
+            return Response({"details": "Admnistrador eliminado"},200)
+        except Exception as e:
+            return Response({"details":"Algo pasó al eliminar"},200)
+
 class TotalUsers(generics.CreateAPIView):
     #Contar el total de cada tipo de usuarios
     def get(self, request, *args, **kwargs):
